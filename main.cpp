@@ -112,7 +112,15 @@ void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo
 		}
 		fwrite(pBuf,nSize,1,VideoYUVfile);
 
-		cv::Mat A;
+		IplImage* pImgYCrCb = cvCreateImage(cvSize(pFrameInfo->nWidth,pFrameInfo->nHeight), 8, 3);//得到图像的Y分量  
+		yv12toYUV(pImgYCrCb->imageData, pBuf, pFrameInfo->nWidth,pFrameInfo->nHeight,pImgYCrCb->widthStep);
+		IplImage* pImg = cvCreateImage(cvSize(pFrameInfo->nWidth,pFrameInfo->nHeight), 8, 3);  
+		cvCvtColor(pImgYCrCb,pImg,CV_YCrCb2RGB);  
+
+		cvShowImage("IPCamera",pImg);
+		cvWaitKey(1);
+		cvReleaseImage(&pImgYCrCb);
+		cvReleaseImage(&pImg);
 
 		// yv to rgb
 
