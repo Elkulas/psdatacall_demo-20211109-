@@ -101,7 +101,7 @@ void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo
 	    printf("当前视频时间戳 :%d\n",pFrameInfo->nStamp);
 		printf("test_DecCb_Write YUV \n");
 		printf("当前视频帧长 %d \t 当前视频帧宽 %d \t 当前视频帧当前视频帧总大小 %d %d\n", 
-		pFrameInfo->nWidth, pFrameInfo->nHeight, nSize, pFrameInfo->);
+		pFrameInfo->nWidth, pFrameInfo->nHeight, nSize);
 		if (VideoYUVfile==NULL)
 		{
 			sprintf(filename,"./record/VideoYV12.yuv");
