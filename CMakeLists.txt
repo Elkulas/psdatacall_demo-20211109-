@@ -39,7 +39,7 @@ link_directories(
 
 ######## executable #######
 add_executable(getsdata 
-  main.cpp
+  src/main.cpp
 )
 
 target_link_libraries( getsdata
