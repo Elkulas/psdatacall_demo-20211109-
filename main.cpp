@@ -15,6 +15,9 @@
 #include "HCNetSDK.h"
 #include "PlayM4.h"
 #include "iniFile.h"
+#include "opencv2/opencv.hpp"
+#include "cv.h"
+#include "highgui.h"
 
 FILE *g_pFile = NULL;
 FILE *VideoYUVfile=NULL;
@@ -108,6 +111,8 @@ void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo
 			VideoYUVfile = fopen(filename,"wb");
 		}
 		fwrite(pBuf,nSize,1,VideoYUVfile);
+
+		cv::Mat A;
 
 		// yv to rgb
 

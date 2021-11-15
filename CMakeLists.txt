@@ -11,8 +11,8 @@ include(CTest)
 enable_testing()
 
 ######## packages ########
-set(OpenCV_DIR "/home/jjj/CodeSrc/opencv-4.5.4/build")
-find_package(OpenCV 4.0 QUIET)
+set(OpenCV_DIR "/home/jjj/CodeSrc/opencv-3.4.16/build")
+find_package(OpenCV 3.0 QUIET)
 
 message(STATUS "OpenCV library status:")
 message(STATUS "    version: ${OpenCV_VERSION}")
@@ -26,6 +26,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/HCNetSDKCom
   ${OpenCV_INCLUDE_DIRS} 
 )
+
 link_directories(
   ${PROJECT_SOURCE_DIR}/HCNetSDKCom
   ${PROJECT_SOURCE_DIR}
