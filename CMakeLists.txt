@@ -28,8 +28,8 @@ include_directories(
 )
 
 link_directories(
-  ${PROJECT_SOURCE_DIR}/HCNetSDKCom
-  ${PROJECT_SOURCE_DIR}
+  ${PROJECT_SOURCE_DIR}/lib/HCNetSDKCom
+  ${PROJECT_SOURCE_DIR}/lib
 )
 
 ######## lib ########
