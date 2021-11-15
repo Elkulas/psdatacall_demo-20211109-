@@ -100,7 +100,7 @@ void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo
 
 	else if(lFrameType == T_YV12)
 	{		
-	    printf("当前视频时间戳 :%\n",pFrameInfo->nStamp);
+	  printf("当前视频时间戳 :%\n",pFrameInfo->nStamp);
 		printf("test_DecCb_Write YUV \n");
 		printf("当前视频帧长 %d \t 当前视频帧宽 %d \t 当前视频帧当前视频帧总大小 %d %d\n", 
 		pFrameInfo->nWidth, pFrameInfo->nHeight, nSize);
