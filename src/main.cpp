@@ -38,72 +38,30 @@ typedef struct tagREAL_PLAY_INFO
 	int iChannel;
 }REAL_PLAY_INFO, *LPREAL_PLAY_INFO;
 
-// update time: 2021/11/15
-// function: YV12_TO_YUV444
-void yv12toYUV(char *outYuv, char *inYv12, int width, int height,int widthStep)
-{
-   int col,row;
-   unsigned int Y,U,V;
-   int tmp;
-   int idx;
- 
-  //printf("widthStep=%d.\n",widthStep);
- 
-   for (row=0; row<height; row++)
-   {
-      idx=row * widthStep;
-      int rowptr=row*width;
- 
-      for (col=0; col<width; col++)
-      {
-         //int colhalf=col>>1;
-         tmp = (row/2)*(width/2)+(col/2);
-//         if((row==1)&&( col>=1400 &&col<=1600))
-//         { 
-//          printf("col=%d,row=%d,width=%d,tmp=%d.\n",col,row,width,tmp);
-//          printf("row*width+col=%d,width*height+width*height/4+tmp=%d,width*height+tmp=%d.\n",row*width+col,width*height+width*height/4+tmp,width*height+tmp);
-//         } 
-         Y=(unsigned int) inYv12[row*width+col];
-         U=(unsigned int) inYv12[width*height+width*height/4+tmp];
-         V=(unsigned int) inYv12[width*height+tmp];
-				 
-         if((idx+col*3+2)> (1200 * widthStep))
-         {
-          //printf("row * widthStep=%d,idx+col*3+2=%d.\n",1200 * widthStep,idx+col*3+2);
-         } 
-         outYuv[idx+col*3]   = Y;
-         outYuv[idx+col*3+1] = U;
-         outYuv[idx+col*3+2] = V;
-      }
-   }
-   //printf("col=%d,row=%d.\n",col,row);
-}
-
-
 //////////////////////////////////////////////////////////////////////////
 ////解码回调 视频为YUV数据(YV12)，音频为PCM数据
 void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo, void* nUser, int nReserved2)
 {
         char filename[100];
  	int lFrameType = pFrameInfo->nType;	
-	if (lFrameType == T_AUDIO16)
-	{
-		printf("Audio nStamp:%d\n",pFrameInfo->nStamp);
-		printf("test_DecCb_Write Audio16 \n");
-		if (AudioPCMfile==NULL)
-		{
-			sprintf(filename,"./record/AudionPCM.pcm");
-			AudioPCMfile = fopen(filename,"wb");
-		}
-		fwrite(pBuf,nSize,1,AudioPCMfile);
-	}
+	// if (lFrameType == T_AUDIO16)
+	// {
+	// 	printf("Audio nStamp:%d\n",pFrameInfo->nStamp);
+	// 	printf("test_DecCb_Write Audio16 \n");
+	// 	if (AudioPCMfile==NULL)
+	// 	{
+	// 		sprintf(filename,"./record/AudionPCM.pcm");
+	// 		AudioPCMfile = fopen(filename,"wb");
+	// 	}
+	// 	fwrite(pBuf,nSize,1,AudioPCMfile);
+	// }
 
-	else if(lFrameType == T_YV12)
+	if(lFrameType == T_YV12)
 	{		
-	  printf("当前视频时间戳 :%\n",pFrameInfo->nStamp);
-		printf("test_DecCb_Write YUV \n");
-		printf("当前视频帧长 %d \t 当前视频帧宽 %d \t 当前视频帧当前视频帧总大小 %d %d\n", 
-		pFrameInfo->nWidth, pFrameInfo->nHeight, nSize);
+	  // printf("当前视频时间戳 :%\n",pFrameInfo->nStamp);
+		// printf("test_DecCb_Write YUV \n");
+		// printf("当前视频帧长 %d \t 当前视频帧宽 %d \t 当前视频帧当前视频帧总大小 %d %d\n", 
+		// pFrameInfo->nWidth, pFrameInfo->nHeight, nSize);
 		// if (VideoYUVfile==NULL)
 		// {
 		// 	sprintf(filename,"./record/VideoYV12.yuv");
@@ -143,8 +101,8 @@ void PsDataCallBack(LONG lRealHandle,DWORD dwDataType,BYTE *pBuffer,DWORD dwBufS
 		}
 
 		//写入头数据
-		fwrite(pBuffer, sizeof(unsigned char), dwBufSize, g_pFile);
-		printf("write head len=%d\n", dwBufSize);
+		// fwrite(pBuffer, sizeof(unsigned char), dwBufSize, g_pFile);
+		// printf("write head len=%d\n", dwBufSize);
 		
 		/////////////////////////////////////////////////////
 		//播放库解码
@@ -190,7 +148,7 @@ void PsDataCallBack(LONG lRealHandle,DWORD dwDataType,BYTE *pBuffer,DWORD dwBufS
 		if(g_pFile != NULL)
 		{
 			fwrite(pBuffer, sizeof(unsigned char), dwBufSize, g_pFile);
-			printf("write data len=%d\n", dwBufSize);
+			// printf("write data len=%d\n", dwBufSize);
 		}
 		
 		/////////////////////////////////////////////////////
