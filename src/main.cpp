@@ -30,6 +30,8 @@ FILE *AudioPCMfile=NULL;
 int iUserID = -1; //设备登录句柄
 int nPort=-1; //解码的播放库句柄
 
+cv::VideoWriter wtr("output.avi", CV_FOURCC('M', 'J', 'P', 'G'), 30, cv::Size(1920, 1080));
+
 //取流相关信息，用于线程传递
 typedef struct tagREAL_PLAY_INFO
 {
@@ -74,7 +76,8 @@ void CALLBACK DecCBFun(int nPort, char* pBuf, int nSize, FRAME_INFO * pFrameInfo
     cv::cvtColor(YUVImg, BGRImg, cv::COLOR_YUV2BGR_YV12);  // 随着图片像素增加，cup占用率也增加
 
 		cv::imshow("相机读取界面", BGRImg);
-		cv::waitKey(1);
+		// cv::waitKey(1);
+		 wtr<<BGRImg;
 	}
 	else
 	{
@@ -177,7 +180,7 @@ void PsDataCallBack(LONG lRealHandle,DWORD dwDataType,BYTE *pBuffer,DWORD dwBufS
 void GetStream()
 {
 	// 从配置文件读取设备信息 
-	IniFile ini("Device.ini");
+	IniFile ini("/home/jjj/NGCLab/Others/psdatacall_demo(20211109)/Device.ini");
 	unsigned int dwSize = 0;
 	char sSection[16] = "DEVICE";
 
@@ -187,6 +190,13 @@ void GetStream()
 	char *sUserName = ini.readstring(sSection, "username", "error", dwSize); 
 	char *sPassword = ini.readstring(sSection, "password", "error", dwSize);
 	int iChannel = ini.readinteger(sSection, "channel", 0);
+
+	printf("[GetStream] sIP %s \n", sIP);
+	printf("[GetStream] iPort %d \n", iPort);
+	printf("[GetStream] sUserName %s \n", sUserName);
+	printf("[GetStream] sPassword %s \n", sPassword);
+	printf("[GetStream] iChannel %d \n", iChannel);
+
 		
 	NET_DVR_DEVICEINFO_V30 struDeviceInfo;
 	iUserID = NET_DVR_Login_V30(sIP, iPort, sUserName, sPassword, &struDeviceInfo);
@@ -205,6 +215,14 @@ void GetStream()
 		struPreviewInfo.bBlocked = 1;
 		struPreviewInfo.bPassbackRecord  = 1;
 		int iRealPlayHandle = NET_DVR_RealPlay_V40(iUserID, &struPreviewInfo, PsDataCallBack, NULL);
+
+		// bool det;
+		// det = NET_DVR_PTZControlWithSpeed(iRealPlayHandle, LIGHT_PWRON, 0, 1);
+		// if(det == true) 
+		// 	printf("LIGHTS ON!!!!!!!!!!!!!!!!!!!!!!!1 \n");
+
+
+
 		printf("[GetStream] iRealPlayHandle %d \n", iRealPlayHandle);
 		if(iRealPlayHandle >= 0)
 		{
@@ -231,6 +249,8 @@ int main()
     NET_DVR_SetLogToFile(3, "./record/");
 
     GetStream();
+
+		
 	
     char c = 0;
     while('q' != c)
