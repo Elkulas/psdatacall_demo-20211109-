@@ -11,7 +11,6 @@ set( CMAKE_CXX_FLAGS "-std=c++11 -O3" )
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-
 include(CTest)
 enable_testing()
 
